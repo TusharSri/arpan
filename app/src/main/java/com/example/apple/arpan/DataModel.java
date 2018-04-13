@@ -10,6 +10,17 @@ public class DataModel {
         this.version = version;
     }
 
+    public DataModel() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public String getName() {
         return name;
     }

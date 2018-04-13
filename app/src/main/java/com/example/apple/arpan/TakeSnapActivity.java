@@ -1,6 +1,7 @@
 package com.example.apple.arpan;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -10,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +27,8 @@ public class TakeSnapActivity extends AppCompatActivity {
     private ImageView imageHolder;
     private final int requestCode = 20;
     private EditText className;
+    private DatabaseReference rootRef;
+    private int counter = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,11 @@ public class TakeSnapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_take_snap);
         className = findViewById(R.id.className);
         Button takeSnapButotn = findViewById(R.id.snap);
+        SharedPreferences prefs = getSharedPreferences("totalEntry", MODE_PRIVATE);
+        counter = prefs.getInt("counter",0);
+        //database reference pointing to root of database
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        //database reference pointing to demo node
         takeSnapButotn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,12 +59,17 @@ public class TakeSnapActivity extends AppCompatActivity {
             String partFilename = currentDateFormat();
             storeCameraPhotoInSDCard(bitmap, partFilename);
 
+            SharedPreferences.Editor editor = getSharedPreferences("totalEntry", MODE_PRIVATE).edit();
+            editor.putInt("counter", counter++);
+            editor.apply();
             // display the image from SD Card to ImageView Control
             String storeFilename = "photo_" + partFilename + ".jpg";
+            DataModel dataModel = new DataModel(className.getText().toString(),storeFilename);
+            rootRef.push().setValue(dataModel);
+
             Intent intent = new Intent(TakeSnapActivity.this, DashboardActivity.class);
-            intent.putExtra("ImageURL", "/"+storeFilename);
-            intent.putExtra("ClassName", className.getText().toString());
             startActivity(intent);
+            finish();
             /* Showing bitmap
             Bitmap mBitmap = getImageFileFromSDCard(storeFilename);
             imageHolder.setImageBitmap(mBitmap);*/

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "115359500439",
+    "firebase_url": "https://arpan-25099.firebaseio.com",
+    "project_id": "arpan-25099",
+    "storage_bucket": "arpan-25099.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115359500439:android:9efb672b77d096ae",
+        "android_client_info": {
+          "package_name": "com.example.apple.arpan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115359500439-etnbtpm8mpe5am1gk32fc3kdp0cdf9q0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apple.arpan",
+            "certificate_hash": "22ca92dbbb6e27280d05e0998beff0e6d2c95e3e"
+          }
+        },
+        {
+          "client_id": "115359500439-scp3tf1phesq3q81imva7utiagtbsepv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWR1XFAl9DV-9WmnXlB-qCLKgqswZ3jc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115359500439-scp3tf1phesq3q81imva7utiagtbsepv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

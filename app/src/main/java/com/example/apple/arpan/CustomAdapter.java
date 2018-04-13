@@ -13,11 +13,11 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-    private ArrayList<DataModel> dataSet;
+    private List<DataModel> dataSet;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,7 +31,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
     }
 
-    public CustomAdapter(ArrayList<DataModel> data) {
+    public CustomAdapter(List<DataModel> data) {
         this.dataSet = data;
     }
 
@@ -40,8 +40,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                                            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cards_layout, parent, false);
-
-        view.setOnClickListener(DashboardActivity.myOnClickListener);
 
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
@@ -65,7 +63,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private Bitmap getImageFileFromSDCard(String filename) {
         Bitmap bitmap = null;
-        File imageFile = new File(Environment.getExternalStorageDirectory() + filename);
+        File imageFile = new File(Environment.getExternalStorageDirectory() +"/" +filename);
         try {
             FileInputStream fis = new FileInputStream(imageFile);
             bitmap = BitmapFactory.decodeStream(fis);

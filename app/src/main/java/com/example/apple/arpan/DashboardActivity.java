@@ -8,42 +8,36 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private static RecyclerView recyclerView;
-    private static ArrayList<DataModel> data;
-    static View.OnClickListener myOnClickListener;
-    private static ArrayList<Integer> removedItems;
+    private RecyclerView recyclerView;
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
+    List albumList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Intent intent = getIntent();
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
-
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < 5; i++) {
-            data.add(new DataModel(
-                    intent.getStringExtra("ClassName"),
-                    intent.getStringExtra("ImageURL")
-            ));
-        }
-
-        removedItems = new ArrayList<Integer>();
-
-        adapter = new CustomAdapter(data);
-        recyclerView.setAdapter(adapter);
+        albumList = new ArrayList<>();
+        settingDatabase();
     }
 
     @Override
@@ -52,4 +46,28 @@ public class DashboardActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    private void settingDatabase() {
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+//        mFirebaseInstance.setPersistenceEnabled(true);
+        mFirebaseDatabase = mFirebaseInstance.getReference();
+        mFirebaseDatabase.child("").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                albumList.clear();
+                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
+                    DataModel note = noteDataSnapshot.getValue(DataModel.class);
+                    albumList.add(note);
+                }
+                adapter = new CustomAdapter(albumList);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
